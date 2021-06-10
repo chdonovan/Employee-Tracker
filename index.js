@@ -25,6 +25,6 @@ const connection = mysql.createConnection({
     user: 'root',
 
     // Your password
-    password: 'OPENTHEGATE
+    password: 'OPENTHEGATE',
     database: 'employees'
 });
