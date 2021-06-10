@@ -32,6 +32,29 @@ CREATE TABLE role (
     INDEX man_ind (manager_id),
     CONSTRAINT fk_manager FOREIGN KEY (manager_id) REFERENCES employee(id) ON DELETE SET NULL,
 );   
+use employees;
+
+INSERT INTO department
+    (name)
+VALUES
+    (''),
+    (''),
+    (''),
+    ('');
+
+INSERT INTO role
+    (title, salary, department_id)
+VALUES
+    ('');
+
+INSERT INTO employee
+    (first_name, last_name, role_id, manager_id)
+VALUES
+    ();
+
+
+
+
 
     
 
