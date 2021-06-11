@@ -28,3 +28,17 @@ const connection = mysql.createConnection({
     password: 'OPENTHEGATE',
     database: 'employees'
 });
+
+connection.connect(err => {
+    if (err) throw err;
+    prompt();
+
+});
+
+function prompt( ) {
+    inquirer
+    .prompt({
+        name: 'action',
+        
+    })
+}
