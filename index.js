@@ -275,3 +275,33 @@ function askId() {
         }
     ]);
 }
+
+async function updateRole(){
+    const employeeId = await inquirer(askId());
+
+    connection.query('SELECT role.id, role.title FROM tole ORDER BY role.id', async (err, res) =>{
+        if (err) throw err;
+        const { role } = await inquirer.prompt([
+            {
+                name:'role',
+                type: 'list',
+                choices: () => res.map(res => res.title),
+                message: 'What is the new emplpyee role?: '
+            }
+        ]);
+        let roleId;
+        for ( const row of res) {
+            if (row.title === role) {
+                roleId = row.id;
+                continue;
+            }
+        }
+        connection.query(` UPDATE employee
+        SET role_id = ${roleId}
+        WHERE employee.id = ${employeeId.name}`, async (err, res) => {
+            if ( err) throw err;
+            console.log('Role has been updated')
+            prompt();
+        });
+    });
+}
