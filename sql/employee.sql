@@ -37,20 +37,34 @@ use employees;
 INSERT INTO department
     (name)
 VALUES
-    (''),
-    (''),
-    (''),
-    ('');
+    ('middleMGMT'),
+    ('Analytics'),
+    ('Media'),
+    ('UpperMGMT');
 
 INSERT INTO role
     (title, salary, department_id)
 VALUES
-    ('');
+    ('GM', 60000), 1),
+    ('AM', 45000) 1);
+    ('Lead Analyst', 80000, 2),
+    ('Analyst', 65000, 2),
+    ('Media MGR', 75000, 3),
+    ('specialist', 70000, 3),
+    ('Ownership', 350000, 4),
+    ('DistMGR', 200000, 4);
 
 INSERT INTO employee
     (first_name, last_name, role_id, manager_id)
 VALUES
-    ();
+    ('Brock', 'Pewter', 1, NULL),
+    ('Misty', 'Cerulean', 2,1),
+    ('Surge', 'Vermillion', 3, NULL),
+    ('Erika', 'Celadon', 4,3),
+    ('Foga', 'Fuchsia' , 5, NULL),
+    ('Sabrina', 'Saffron' , 6, 5),
+    ('Blaine', 'Cinnabar', 7, NULL),
+    ('Giovani', 'Viridian', 8,7);
 
 
 
