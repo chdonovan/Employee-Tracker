@@ -1,7 +1,6 @@
 // Dependencies
 const mysql = require('mysql');
 const inquirer = require('inquirer');
-const { createPool } = require('mysql2/promise');
 require('console.table');
 
 const promptMessages = {
@@ -224,4 +223,25 @@ function viewAllRoles(){
         });
     });    
 }
+function remove (input) {
+    const promptQ = {
+        yes: "yes", 
+        no: "no i dont (view all employees on th emain option"
+    };
+    inquirer. prompt([
+        {
+            name: "action",
+            type: "list", 
+            message: "to proceed an employee, an ID must be entered. View all employees to get" +
+                " the employee ID. Do you know the employee ID?", 
+            choices: [promptQ.yes, promptQ.no]
+        }
+        
+    ]).then(answer => {
+        if (input === 'delete' && answer.action === "yes") removeEmployee();
+        else if (input === 'role' && answer.action === "yes") updateRole();
+        else viewAllEmployees();
+    });
+};
+
 
