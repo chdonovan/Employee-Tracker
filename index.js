@@ -244,4 +244,34 @@ function remove (input) {
     });
 };
 
+async function removeEmployee() {
+    const answer = await inquirer.prompt([
+        {
+            name: "first",
+            type: "input",
+            message: "Enter the employee ID you want to remove: "
+        }
+    ]);
 
+    connection.query('DELETE FROM employee WHERE ?',
+        {
+            id: answer.first
+
+        },
+        function (err) {
+            if (err) throw err;
+        }
+    )
+    console.log('Employee has been removed from the system');
+    prompt();
+};
+
+function askId() {
+    return ([
+        { 
+            name: "name",
+            type: "input",
+            message: "what is the employee ID? "
+        }
+    ]);
+}
