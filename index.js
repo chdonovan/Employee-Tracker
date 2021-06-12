@@ -113,9 +113,9 @@ function viewAllEmployees() {
 
 function viewByDepartment() {
     const query = `SELECT department.name AS department, role.title, employee.id, employee.first_name, employee.last_name
-    FROM epmloyee
+    FROM employee
     LEFT JOIN role ON (role.id = employee.role_id)
-    LEFT JOIN department ON(department.id = role.department_id)
+    LEFT JOIN department ON (department.id = role.department_id)
     ORDER BY department.name;`;
     connection.query(query, (err, res) => {
         if (err) throw err;
@@ -160,44 +160,43 @@ function viewAllRoles(){
     });
 
 }
- async function addEmployee() {
+async function addEmployee() {
     const addname = await inquirer.prompt(askName());
-    connection.query('SELECT role.id, role.title FROM role ORDER BY role.id;', async (err, res)=>{
+    connection.query('SELECT role.id, role.title FROM role ORDER BY role.id;', async (err, res) => {
         if (err) throw err;
-        const {role} = await inquirer.prompt([
+        const { role } = await inquirer.prompt([
             {
                 name: 'role',
                 type: 'list',
                 choices: () => res.map(res => res.title),
-                message: 'What is the employee role?'
+                message: 'What is the employee role?: '
             }
         ]);
         let roleId;
-        for (const row of res){
+        for (const row of res) {
             if (row.title === role) {
-                roleID = row.id;
+                roleId = row.id;
                 continue;
             }
         }
         connection.query('SELECT * FROM employee', async (err, res) => {
             if (err) throw err;
-            let choices = res.map(res `${res.first_name} ${res.last+name}`);
+            let choices = res.map(res => `${res.first_name} ${res.last_name}`);
             choices.push('none');
             let { manager } = await inquirer.prompt([
                 {
-                    name: 'manager', 
-                    type: 'list', 
+                    name: 'manager',
+                    type: 'list',
                     choices: choices,
-                    message: 'choose the emloyee Manager: '
+                    message: 'Choose the employee Manager: '
                 }
             ]);
             let managerId;
             let managerName;
             if (manager === 'none') {
                 managerId = null;
-
             } else {
-                for ( const data of res) {
+                for (const data of res) {
                     data.fullName = `${data.first_name} ${data.last_name}`;
                     if (data.fullName === manager) {
                         managerId = data.id;
@@ -208,22 +207,24 @@ function viewAllRoles(){
                     }
                 }
             }
-            console.log('Employee has been added. PLease view all employee to verify');
+            console.log('Employee has been added. Please view all employee to verify...');
             connection.query(
                 'INSERT INTO employee SET ?',
                 {
                     first_name: addname.first,
                     last_name: addname.last,
-                    role_id: parseInt(managerId)
+                    role_id: roleId,
+                    manager_id: parseInt(managerId)
                 },
                 (err, res) => {
                     if (err) throw err;
                     prompt();
+
                 }
             );
-            
         });
-    });    
+    });
+
 }
 function remove (input) {
     const promptQ = {
@@ -279,9 +280,9 @@ function askId() {
 }
 
 async function updateRole(){
-    const employeeId = await inquirer(askId());
+    const employeeId = await inquirer.prompt(askId());
 
-    connection.query('SELECT role.id, role.title FROM tole ORDER BY role.id', async (err, res) =>{
+    connection.query('SELECT role.id, role.title FROM role ORDER BY role.id;', async (err, res) => {
         if (err) throw err;
         const { role } = await inquirer.prompt([
             {
@@ -301,7 +302,7 @@ async function updateRole(){
         connection.query(` UPDATE employee
         SET role_id = ${roleId}
         WHERE employee.id = ${employeeId.name}`, async (err, res) => {
-            if ( err) throw err;
+            if (err) throw err;
             console.log('Role has been updated')
             prompt();
         });
